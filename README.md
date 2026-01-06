@@ -7,7 +7,7 @@ pipeline.
 
 ## Architecture
 
-[TODO: insert architecture diagram]
+![Project Physical Network Map](assets/soc-detection-network-map.png "Network Map")
 
 ### SIEM/HIDS: Wazuh
 

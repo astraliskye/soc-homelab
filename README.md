@@ -7,7 +7,7 @@ pipeline.
 
 ## Architecture
 
-![Project Physical Network Map](https://github.com/astraliksye/soc-homelab/blob/main/assets/soc_detection_network_map.png "Network Map")
+![Project Physical Network Map](https://media.githubusercontent.com/media/astraliskye/soc-homelab/main/assets/soc_detection_network_map.png "Network Map")
 
 ### SIEM/HIDS: Wazuh
 

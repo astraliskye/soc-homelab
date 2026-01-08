@@ -1,99 +1,165 @@
-# SOC Detection Lab
+# SOC Detection Pipeline (Wazuh-Based)
 
-This is a personal project for me to get more insight into how a security
-detection pipeline can be setup using open source software, and  to give me a
-start to finish view of how events and logs propagate through the detection
-pipeline.
+## Overview
+
+This project implements a **Security Operations Center (SOC) detection pipeline** using open-source tooling, with **Wazuh** as the core SIEM/HIDS platform. The goal is to design, operate, and document a realistic detection environment that demonstrates how security telemetry is generated, ingested, detected, and investigated across multiple operating systems and attack types.
+
+The focus of this project is **detection engineering and incident response**, not simply tool deployment. It emphasizes understanding how events propagate through the pipeline and how detections can be validated through controlled attack scenarios.
+
+---
+
+## Project Goals
+
+- Build and operate a functional SOC-style detection pipeline
+- Ingest and correlate logs from Windows and Linux systems
+- Implement and validate detections across multiple attack categories
+- Document incident response playbooks and case studies
+- Maintain realistic scope and signal-to-noise ratios
+
+---
 
 ## Architecture
 
 ![Project Physical Network Map](https://media.githubusercontent.com/media/astraliskye/soc-homelab/main/assets/soc_detection_network_map.png "Network Map")
 
-### SIEM/HIDS: Wazuh
+### SIEM / HIDS: Wazuh
 
-Wazuh was selected for its ease of setup and configuration as well as my
-complete unfamiliarity with it.
+Wazuh was selected as the core detection platform due to its combination of host-based intrusion detection, log analysis, and extensibility through custom rules and decoders.
 
-In the theme of simplicity, I setup Wazuh using Docker on an always-on machine
-on my network running Ubuntu Server. There are three components to the Wazuh
-server: the indexer, the manager, and the dashboard. I opted to setup all three
-on a single node, following [these instructions from Wazuh](https://documentation.wazuh.com/current/deployment-options/docker/wazuh-container.html).
+The Wazuh stack (Indexer, Manager, and Dashboard) is deployed using Docker on an always-on Ubuntu Server host. All components run on a single node for simplicity while preserving the logical separation present in larger deployments.
 
-### Monitored hosts
+Deployment follows official Wazuh containerization guidance:
 
-#### Windows 11
+- Indexer
+- Manager
+- Dashboard
 
-This is a well-used Windows machine running on physical hardware. Being
-my primary rig, it has plenty of apps and services running. It also hosts
-VirtualBox, on which the other monitored host (Debian 13) will run.
+---
 
-#### Debian 13
+## Monitored Hosts
 
-This is a virtual machine running inside VirtualBox on the primary
-Windows 11 machine. To give some variety to the traffic and possible
-detections, I installed DVWA (Damn Vulnerable Web Application) as an
-intentionally insecure web application I can attack. This gives more variety
-to possible detections and keeps the project inline with my interest in web
-technologies.
+### Windows 11 Endpoint
 
-### Attacker machine
+A physical Windows 11 system representing a high-noise, real-world endpoint. This host runs a variety of applications and services and provides telemetry related to:
 
-A laptop running Gentoo. Originally, I wanted to use a Kali WSL 2 instance
-running on the Windows 11 machine, but I want the network traffic to hit
-physical NICs curing attacks in case I want to implement a NIDS in the future.
+- Process creation
+- Authentication events
+- PowerShell activity
+- System behavior typical of end-user machines
 
-## Detections
+It also hosts VirtualBox for running the Linux-based monitored environment.
 
-These are the attack categories the project focuses on.
+---
 
-[TODO: link to telemetry document]
+### Debian 13 Server
 
-[TODO: link to each detection document]
+A Debian 13 virtual machine running inside VirtualBox. This system hosts **DVWA (Damn Vulnerable Web Application)** to provide a controlled target for web-based attacks.
 
-### Web
+This host generates telemetry related to:
 
-- Brute force login
-- SQL injection attempt
-- XSS payload
-- Command injection
-- File inclusion
-- Web shell
+- Web application exploitation
+- Authentication activity
+- Privilege escalation attempts
+- Persistence mechanisms
 
-### Windows
+---
 
-- Encoded Powershell commands
-- LSASS exploitation
-- Excessive use of LOLBins
-- Suspicious outbound connections
-- Persistence attempts
+## Attacker Host
 
-### Debian
+A separate laptop running Gentoo Linux is used to perform attacks against the monitored environment. Using a physically separate attacker system ensures that network traffic traverses real interfaces, allowing for future expansion into network-based detection (NIDS).
 
-- SSH brute force login
-- Privilege escalation
-- Suspicious outbound connections
-- Persistence attempts
+---
+
+## Detection Scope
+
+To keep the project focused and analyzable, detections are intentionally limited to **three attacks per category** across web, Windows, and Linux environments.
+
+This scoped approach allows for deeper analysis of each detection rather than superficial coverage of many attack types.
+
+Detailed telemetry, detection logic, and validation steps are documented separately.
+
+[TODO: Telemetry documentation]  
+[TODO: Detection documentation]
+
+---
+
+## Implemented Detection Categories
+
+### Web Application Attacks
+
+- Brute force login attempts
+- SQL injection attempts
+- Web shell activity
+
+### Windows Attacks
+
+- Encoded PowerShell execution
+- LSASS access or exploitation indicators
+- Excessive or suspicious use of LOLBins
+
+### Linux Attacks
+
+- SSH brute force authentication attempts
+- Privilege escalation attempts
+- Persistence mechanisms
+
+---
 
 ## Incident Response Playbooks
 
-Documentation for responding to incidents on this particular setup.
-More theoretical than the case studies.
+This project includes **incident response playbooks** tailored to the specific architecture and detections implemented. These playbooks describe expected investigation steps, containment strategies, and validation procedures.
 
-[TODO: link to each playbook]
+[TODO: Link to IR playbooks]
 
-### Web Application Compromise
+### Planned Playbooks
 
-### Suspected Credential Theft
+- Web Application Compromise
+- Suspected Credential Theft
+- Lateral Movement Attempt
 
-### Lateral Movement Attempt
+---
 
 ## Case Studies
 
-Exercises in attacking and responding to incidents. More practical than the
-IR playbooks.
+Case studies provide **end-to-end exercises** that combine attack execution, detection validation, alert analysis, and response actions. These are more practical than the playbooks and reflect realistic analyst workflows.
 
-[TODO: link to case studies]
+[TODO: Link to case studies]
 
-### SQL Injection
+### Planned Case Studies
 
-### Brute Force Login
+- SQL Injection Attack Lifecycle
+- Brute Force Authentication Attack
+
+---
+
+## Roadmap
+
+### Detection Engineering
+
+- [ ] Implement custom Wazuh detection rules
+- [ ] Develop custom decoders where needed
+- [ ] Map detections to MITRE ATT&CK techniques
+
+### SOC Operations
+
+- [ ] Create dashboards for detection visibility
+- [ ] Document alert triage workflows
+- [ ] Reduce false positives through tuning
+
+### Automation & Response
+
+- [ ] Add basic alert enrichment
+- [ ] Implement active response actions
+- [ ] Track alert lifecycle and outcomes
+
+### Documentation & Polish
+
+- [ ] Architecture deep-dive
+- [ ] Detection validation write-ups
+- [ ] End-to-end walkthroughs
+
+---
+
+## Disclaimer
+
+This project is intended for educational and demonstration purposes only. No production systems or real user data are involved.

@@ -42,4 +42,4 @@ Subnet 192.168.1.0/24:
 
 ## About
 
-Hey my name is Skye. I have experience with software development and IT operations, trying to move into SOC analyst work.
+Hey my name is Skye. I have experience in IT operations and some adversary emulation lab work, trying to move into SOC analyst work.

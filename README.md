@@ -42,4 +42,4 @@ Subnet 192.168.1.0/24:
 
 ## About
 
-Hey my name is Skye. I have experience with software development and IT operations, trying to move into SOC analyst work. Extensively educated in the art of computer science.
+Hey my name is Skye. I have experience with software development and IT operations, trying to move into SOC analyst work.

@@ -28,7 +28,7 @@ Subnet 192.168.1.0/24:
 
 ## Detections
 
-![T1059.001 -> T1003.001](/detections/T1059.001.md) - Powershell downlaods Mimikatz followed by credential dumping via accessing LSASS.exe.
+[T1059.001 -> T1003.001](/detections/T1059.001.md) - Powershell downlaods Mimikatz followed by credential dumping via accessing LSASS.exe.
 
 ## Setup
 
